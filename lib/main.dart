@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:myapp/settings_screen.dart';
 
 // Paleta de colores que combina los diseños
 class AppColors {
@@ -47,7 +48,50 @@ class StudioMochiApp extends StatelessWidget {
           showUnselectedLabels: true,
         ),
       ),
-      home: const HomePage(),
+      home: const MainScreen(),
+    );
+  }
+}
+
+class MainScreen extends StatefulWidget {
+  const MainScreen({super.key});
+
+  @override
+  State<MainScreen> createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen> {
+  int _selectedIndex = 0;
+
+  static const List<Widget> _screens = <Widget>[
+    HomePage(),
+    Center(child: Text('Sesiones')),
+    Center(child: Text('Galería')),
+    Center(child: Text('Perfil')),
+    SettingsScreen(),
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: _screens[_selectedIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.camera_alt), label: 'INICIO'),
+          BottomNavigationBarItem(icon: Icon(Icons.calendar_today), label: 'SESIONES'),
+          BottomNavigationBarItem(icon: Icon(Icons.photo_library), label: 'GALERIA'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'PERFIL'),
+          BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'AJUSTES'),
+        ],
+      ),
     );
   }
 }
@@ -88,18 +132,6 @@ class HomePage extends StatelessWidget {
             _buildServicesGrid(),
           ],
         ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: 0, // Inicio seleccionado
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.camera_alt), label: 'INICIO'),
-          BottomNavigationBarItem(icon: Icon(Icons.calendar_today), label: 'SESIONES'),
-          BottomNavigationBarItem(icon: Icon(Icons.photo_library), label: 'GALERIA'),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'PERFIL'),
-        ],
-        onTap: (index) {
-          // Lógica de navegación
-        },
       ),
     );
   }
